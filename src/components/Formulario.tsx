@@ -1,11 +1,12 @@
 import { useState } from "react";
 import styled from '@emotion/styled';
 
-
-interface Login { //traemos del padre, el boton y los datos de Tarea
-    correo: string,
-    contrasena: string,
-}
+const Boton = styled.button`
+  background-color: blue;
+  border: 1px solid blue;
+  color: white;
+  padding: 5px;
+`
 
 function Formulario(){
   const [correo, setCorreo] = useState(""); //estado -> input titulo
@@ -28,34 +29,26 @@ function Formulario(){
   return (
     <>
       <div>
-        <h1>Formulario</h1>
+        <h1>Formulario Login</h1>
         <form onSubmit={guardarTarea}>
           <div>
             <label>
               Titulo
               <input
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
               />
             </label>
 
             <label>
               Descripción
               <input
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
               />
             </label>
 
-            <label>
-              Responsable
-              <input
-                value={responsable}
-                onChange={(e) => setResponsable(e.target.value)}
-              />
-            </label>
-
-            <button type="submit">Guardar</button>
+            <Boton type="submit">Login</Boton>
           </div>
         </form>
       </div>
