@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router';
+import styled from '@emotion/styled';
 
 import Login from './components/Login';
 import Registro from './components/Registro';
@@ -15,25 +16,25 @@ import ListadoUsuarios from './layout/ListadoUsuarios';
 
 function App(){
   return(
-    <>
-      <Routes>
-        {/* AUTENTICACION */}
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/registro" element={<Registro />} />
-          <Route path="/logout" element={<Logout />} />
+      <>
+        <Routes>
+          {/* AUTENTICACION */}
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Registro />} />
+            <Route path="/logout" element={<Logout />} />
 
-        {/* COLECCION COCHES */}
-          <Route path="/coches" element={<ListadoCoches />} />
-          <Route path="/coches/nuevo" element={<NuevoCoche />} />
-          <Route path="/coches/:id" element={<TarjetaCoche />} />
-          <Route path="/coches/:id/editar" element={<EditarCoche />} />
+          {/* COLECCION COCHES */}
+            <Route path="/coches" element={<ListadoCoches />} />
+            <Route path="/coches/nuevo" element={<NuevoCoche />} />
+            <Route path="/coches/:id" element={<TarjetaCoche />} />
+            <Route path="/coches/:id/editar" element={<EditarCoche />} />
 
-        {/* COLECCION USUARIOS */}
-          <Route path="/perfil" element={<PerfilUsuario />} />
-          <Route path="/usuarios" element={<ListadoUsuarios />} />
-          <Route path="/usuarios/:id/editar" element={<EditarUsuario />} />
-      </Routes>
+          {/* COLECCION USUARIOS */}
+            <Route path="/perfil" element={<PerfilUsuario />} />
+            <Route path="/usuarios" element={<ListadoUsuarios />} />
+            <Route path="/usuarios/:id/editar" element={<EditarUsuario />} />
+        </Routes>
     </>
   )
   

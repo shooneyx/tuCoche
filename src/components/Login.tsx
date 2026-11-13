@@ -1,9 +1,9 @@
-import Formulario from "./Formulario";
+import FormularioLogin from "./FormularioLogin";
 
 function Login(){
     return(
         <>
-            <Formulario/>
+            <FormularioLogin/>
         </>
     )
 }

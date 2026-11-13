@@ -1,18 +1,24 @@
 import { useState } from "react";
 import styled from '@emotion/styled';
+import { useLocation, useNavigate } from 'react-router';
 
 const Boton = styled.button`
-  background-color: blue;
-  border: 1px solid blue;
-  color: white;
+  background-color: #5CBEFF;
+  border: 1px solid #5CBEFF;
+  color: #ffff;
   padding: 5px;
 `
 
-function Formulario(){
+function FormularioLogin(){
   const [correo, setCorreo] = useState(""); //estado -> input titulo
   const [contrasena, setContrasena] = useState(""); //estado -> input descripcion
 
-  const guardarTarea = async (e: React.FormEvent<HTMLFormElement>) => {
+  const location = useLocation(); //para saber en qué pagina esta el usuario
+  const isLogin = location.pathname === '/login';
+
+  const navegar = useNavigate();
+
+  const enviarDatos = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -21,16 +27,20 @@ function Formulario(){
       setCorreo("");
       setContrasena("");
 
+      if(isLogin){
+        navegar("/coches")
+      }
+
     } catch (err) {
-      console.error("No se pudo guardar la tarea", err);
+      console.error("No se ha podido hacer", err);
     }
   };
 
   return (
     <>
       <div>
-        <h1>Formulario Login</h1>
-        <form onSubmit={guardarTarea}>
+        <h1>{isLogin ? 'Iniciar sesión' : 'Registrarse'}</h1>
+        <form onSubmit={enviarDatos}>
           <div>
             <label>
               Titulo
@@ -48,11 +58,14 @@ function Formulario(){
               />
             </label>
 
-            <Boton type="submit">Login</Boton>
+            <Boton type="submit">
+                {isLogin ? 'Login' : 'Registrarse'}
+            </Boton>
+
           </div>
         </form>
       </div>
     </>
   );
 }
-export default Formulario;
+export default FormularioLogin;
