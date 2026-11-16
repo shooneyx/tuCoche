@@ -43,7 +43,7 @@ function FormularioLogin(){
         <form onSubmit={enviarDatos}>
           <div>
             <label>
-              Titulo
+              Correo
               <input
                 value={correo}
                 onChange={(e) => setCorreo(e.target.value)}
@@ -51,7 +51,7 @@ function FormularioLogin(){
             </label>
 
             <label>
-              Descripción
+              Contraseña
               <input
                 value={contrasena}
                 onChange={(e) => setContrasena(e.target.value)}
