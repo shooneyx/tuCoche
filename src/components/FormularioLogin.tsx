@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 import usePost from "./CRUD/POST";
+import useAuth from "../context/UseAuth";
 
 const Boton = styled.button`
   background-color: #5CBEFF;
@@ -13,6 +14,17 @@ type Usuario = {
   correo: string,
   contrasena: string,
 }
+type RespuestaUsuario = {
+  mensaje: string,
+  token: string,
+  usuario: DatosUsuario;
+}
+type DatosUsuario = {
+  nombre: string,
+  correo: string,
+  rol: string,
+  fechaNacimiento?: string;
+}
 
 function FormularioLogin(){
   const [correo, setCorreo] = useState(""); //estado -> input titulo
@@ -21,9 +33,11 @@ function FormularioLogin(){
   //const location = useLocation(); //para saber en qué pagina esta el usuario
   //const isLogin = location.pathname === '/login';
 
-  const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/auth/login");
+  const {POST, isLoading, error } = usePost<Usuario, RespuestaUsuario>("http://localhost:3000/auth/login");
 
   const navegar = useNavigate();
+
+  const { setToken } = useAuth(); //(token)obtiene token actual | actualiza token | accede al conexto compartido entre componentes
 
   const enviarDatos = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +52,8 @@ function FormularioLogin(){
         return;
       }
 
-      await POST(datos);
+      const respuestaUsuario = await POST(datos);
+      setToken(respuestaUsuario.token);
 
       setCorreo("");
       setContrasena("");

@@ -50,9 +50,14 @@ type Coche = {
     usuario: string;
 };
 
+type RespuestaCoche = {
+    data: Coche[];
+};
+
+
 
 function ListadoCoches(){
-    const { data, isLoading, error } = useGet<Coche[]>("http://localhost:3000/coches");
+    const { data, isLoading, error } = useGet<RespuestaCoche>("http://localhost:3000/coches");
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -66,28 +71,33 @@ function ListadoCoches(){
                     {/* panel con lista de coches -> si tiene coche muestra coches, si no tiene ninguno muestra mensaje
                     aun no tiene coches a su nombre */}
                     <TablaCoches>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Año de Creación</th>
-                        <th>Precio</th>
-                        <th>Fecha de Matriculación</th>
-                        <th>Combustible</th>
-                        <th>Imagen</th> {/* son urls */}
-                        <th>Propietario</th> {/* Usuario al que pertnece el coche */}
-
-                        {data?.map(t =>
-                        <tr>
-                            <td key={t.id}> {t.marca}</td>
-                            <td> {t.modelo}</td>
-                            <td> {t.ano}</td>
-                            <td> {t.precio}</td>
-                            <td> {t.fechaMatriculacion}</td>
-                            <td> {t.combustible}</td>
-                            <td> {t.urlImagen}</td>
-                            <td> {t.usuario}</td>
-                        
-                        </tr>
-                        )}
+                        <thead>
+                            <tr>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Año de Creación</th>
+                                <th>Precio</th>
+                                <th>Fecha de Matriculación</th>
+                                <th>Combustible</th>
+                                <th>Imagen</th> {/* son urls */}
+                                <th>Propietario</th> {/* Usuario al que pertnece el coche */}
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            {data?.data.map(t =>
+                                <tr key={t.id}>
+                                    <td>{t.marca}</td>
+                                    <td>{t.modelo}</td>
+                                    <td>{t.ano}</td>
+                                    <td>{t.precio}</td>
+                                    <td>{t.fechaMatriculacion}</td>
+                                    <td>{t.combustible}</td>
+                                    <td>{t.urlImagen}</td>
+                                    <td>{t.usuario}</td>
+                                </tr>
+                            )}
+                        </tbody>
 
                     </TablaCoches>
                 </ContenedorLista>

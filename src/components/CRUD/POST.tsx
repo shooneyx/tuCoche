@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-function usePost<T>(url:string) {
+//T --> represneta datos enviados, R --> datos recibidos
+function usePost<T, R>(url:string) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -18,7 +19,7 @@ function usePost<T>(url:string) {
             })
 
             if (!respuesta.ok) throw new Error("Error HTTP"); //comrpueba si la peticin ha salido bien
-            const json: T = await respuesta.json();
+            const json: R = await respuesta.json();
             return json;
 
         } catch(err){

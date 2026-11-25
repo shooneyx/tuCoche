@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import useAuth from "../../context/UseAuth";
 
 function useGet<T>(url: string) {
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { token } = useAuth();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -12,7 +15,12 @@ function useGet<T>(url: string) {
     
     async function cargar() {
         try {
-            const res = await fetch(url, { signal: controller.signal });
+            const res = await fetch(url, { 
+                signal: controller.signal,
+                headers: {
+                    Authorization: `Bearer ${token}`, //pasamos el token por header
+                } 
+            });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const json: T = await res.json();
             if (!controller.signal.aborted) setData(json);
@@ -25,7 +33,7 @@ function useGet<T>(url: string) {
     }
     void cargar();
     return () => controller.abort();
-    }, [url]);
+    }, [url, token]);
 
 return { data, isLoading, error }}
 
