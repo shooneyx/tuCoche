@@ -10,74 +10,99 @@ const Boton = styled.button`
   padding: 5px;
 `
 type Usuario = {
-  correo: string,
-  contrasena: string,
+    nombre: string,
+    correo: string,
+    contrasena: string,
+    fechaNacimiento?: string;
 }
 
 function FormularioRegistro(){
-  const [correo, setCorreo] = useState(""); //estado -> input titulo
-  const [contrasena, setContrasena] = useState(""); //estado -> input descripcion
+    const [nombre, setNombre] = useState(""); 
+    const [correo, setCorreo] = useState(""); 
+    const [contrasena, setContrasena] = useState(""); 
+    const [fechaNacimiento, setFechaNacimiento] = useState(""); 
 
-  const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/registro");
+    const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/auth/register");
 
-  const navegar = useNavigate();
+    const navegar = useNavigate();
 
-  const enviarDatos = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const enviarDatos = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-    const datos = {
-      correo,
-      contrasena
-    }
-
-    try {
-        if (datos.correo.trim() === "" || datos.contrasena.trim() === "") {
-        return;
+        const datos = {
+            nombre,
+            correo,
+            contrasena,
+            fechaNacimiento
         }
 
-        await POST(datos);
+        try {
+            if (datos.nombre.trim() === "" || datos.correo.trim() === "" || datos.contrasena.trim() === "") {
+            return;
+            }
 
-        setCorreo("");
-        setContrasena("");
+            await POST(datos);
 
-        navegar("/login")
+            setCorreo("");
+            setContrasena("");
 
-    } catch (err) {
-        console.error("No se ha podido hacer", err);
-    }
-  };
+            navegar("/login")
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+        } catch (err) {
+            console.error("No se ha podido hacer", err);
+        }
+    };
 
-  return (
-    <>
-      <div>
-        <h1>Registrarse</h1>
-        <form onSubmit={enviarDatos}>
-          <div>
-            <label>
-              Correo
-              <input
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
-              />
-            </label>
+    if (isLoading) return <p>Cargando...</p>;
+    if (error) return <p>Error: {error}</p>;
 
-            <label>
-              Contraseña
-              <input
-                value={contrasena}
-                onChange={(e) => setContrasena(e.target.value)}
-              />
-            </label>
+    return (
+        <>
+        <div>
+            <h1>Registrarse</h1>
+            <form onSubmit={enviarDatos}>
+            <div>
+                <label>
+                Nombre
+                <input
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                />
+                </label>
 
-            <Boton type="submit">Registrar</Boton>
+                <label>
+                Correo
+                <input
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                />
+                </label>
 
-          </div>
-        </form>
-      </div>
-    </>
-  );
+                <label>
+                Contraseña
+                <input
+                    value={contrasena}
+                    onChange={(e) => setContrasena(e.target.value)}
+                />
+                </label>
+
+                <label>
+                Fecha Nacimiento
+                <input
+                    type="date"
+                    id="fechaNacimiento"
+                    name="fechaNacimiento"
+                    value={fechaNacimiento}
+                    onChange={(e) => setFechaNacimiento(e.target.value)}
+                />
+                </label>
+
+                <Boton type="submit">Registrar</Boton>
+
+            </div>
+            </form>
+        </div>
+        </>
+    );
 }
 export default FormularioRegistro;

@@ -21,7 +21,7 @@ function FormularioLogin(){
   //const location = useLocation(); //para saber en qué pagina esta el usuario
   //const isLogin = location.pathname === '/login';
 
-  const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/login");
+  const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/auth/login");
 
   const navegar = useNavigate();
 
@@ -76,7 +76,7 @@ function FormularioLogin(){
             </label>
 
             <Boton type="submit">Login</Boton>
-            
+
           </div>
         </form>
       </div>

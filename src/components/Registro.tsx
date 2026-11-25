@@ -1,9 +1,9 @@
-import FormularioLogin from "./FormularioLogin";
+import FormularioRegistro from "./FormularioRegistro";
 
 function Registro(){
     return(
         <>
-            <FormularioLogin />
+            <FormularioRegistro />
         </>
     )
 }
