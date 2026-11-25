@@ -1,29 +1,22 @@
+import { useNavigate } from "react-router";
 import usePost from "./CRUD/POST";
 import { useState } from "react";
 
 type Coche = {
-    onClose: (
-        marca: string,
-        modelo: string,
-        ano: string,
-        precio: string,
-        fechaMatriculacion: string,
-        combustible: string,
-        urlImagen?: string | null,
-    ) => Promise<void>;
+    marca: string,
+    modelo: string,
+    ano: string,
+    precio: string,
+    fechaMatriculacion: string,
+    combustible: string,
+    urlImagen?: string | null;
+}
 
-    datosAnteriores?: {
-        marca: string;
-        modelo: string;
-        ano: string;
-        precio: string;
-        fechaMatriculacion: string;
-        combustible: string;
-        urlImagen?: string | null;
-     };
+type Props = {
+    datosAnteriores?: Coche
 };
   
-function NuevoCoche( {onClose, datosAnteriores}:Coche ){
+function NuevoCoche( {datosAnteriores}:Props ){
     const [marca, setMarca] = useState(datosAnteriores?.marca || ""); //estado -> input titulo
     const [modelo, setModelo] = useState(datosAnteriores?.modelo || ""); //estado -> input descripcion
     const [ano, setAno] = useState(datosAnteriores?.ano || ""); //estado -> input responsable 
@@ -32,12 +25,32 @@ function NuevoCoche( {onClose, datosAnteriores}:Coche ){
     const [combustible, setCombustible] = useState(datosAnteriores?.combustible || ""); //estado -> input responsable 
     const [urlImagen, setUrlImagen] = useState(datosAnteriores?.urlImagen || ""); //estado -> input responsable 
 
+     const {POST, isLoading, error } = usePost<Coche>("http://localhost:3000/coches/nuevo");
+     const navegar = useNavigate();
+
     const guardarCoche = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        try {
-            await onClose(marca, modelo, ano, precio, fechaMatriculacion, combustible, urlImagen,);
+        const datos = {
+            marca, 
+            modelo, 
+            ano,
+            precio, 
+            fechaMatriculacion,
+            combustible,
+            urlImagen
+        }
 
+        try {
+            //1º valida
+            if (datos.marca.trim() === "" || datos.modelo.trim() === "" || datos.ano.trim() === "" || datos.precio.trim() === "" || datos.fechaMatriculacion.trim() === "" || datos.combustible.trim() === "") {
+                return;
+            }
+
+            //2º espera a los datos de post
+            await POST(datos);
+
+            //3º limpia pantalla
             setMarca("");
             setModelo("");
             setAno("");
@@ -46,12 +59,13 @@ function NuevoCoche( {onClose, datosAnteriores}:Coche ){
             setCombustible("");
             setUrlImagen("");
 
+             //4º redirige a panel coches
+            navegar("/coches");
+
         } catch (err) {
             console.error("No se pudo guardar la tarea", err);
         }
     };
-
-    const {isLoading, error } = usePost<Coche[]>("http://localhost:3000/coches/nuevo");
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
