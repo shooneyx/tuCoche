@@ -25,8 +25,8 @@ function NuevoCoche( {datosAnteriores}:Props ){
     const [combustible, setCombustible] = useState(datosAnteriores?.combustible || ""); //estado -> input responsable 
     const [urlImagen, setUrlImagen] = useState(datosAnteriores?.urlImagen || ""); //estado -> input responsable 
 
-     const {POST, isLoading, error } = usePost<Coche>("http://localhost:3000/coches/nuevo");
-     const navegar = useNavigate();
+    const {POST, isLoading, error } = usePost<Coche>("http://localhost:3000/coches/nuevo");
+    const navegar = useNavigate();
 
     const guardarCoche = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

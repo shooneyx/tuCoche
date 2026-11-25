@@ -5,10 +5,6 @@ function usePost<T>(url:string) {
     const [error, setError] = useState<string | null>(null);
 
     async function POST(datos:T){
-
-        //objetc.values -> obtine todos los valores del objeto
-        //every -> comprueba que todos cumplan la condición.
-        //datos as objetc -> es como le decimos a TypeScript que trate datos como un objeto.
         setIsLoading(true);
         setError(null);
 

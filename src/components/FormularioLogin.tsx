@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from '@emotion/styled';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import usePost from "./CRUD/POST";
 
 const Boton = styled.button`
   background-color: #5CBEFF;
@@ -8,38 +9,54 @@ const Boton = styled.button`
   color: #ffff;
   padding: 5px;
 `
+type Usuario = {
+  correo: string,
+  contrasena: string,
+}
 
 function FormularioLogin(){
   const [correo, setCorreo] = useState(""); //estado -> input titulo
   const [contrasena, setContrasena] = useState(""); //estado -> input descripcion
 
-  const location = useLocation(); //para saber en qué pagina esta el usuario
-  const isLogin = location.pathname === '/login';
+  //const location = useLocation(); //para saber en qué pagina esta el usuario
+  //const isLogin = location.pathname === '/login';
+
+  const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/login");
 
   const navegar = useNavigate();
 
   const enviarDatos = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const datos = {
+      correo,
+      contrasena
+    }
+
     try {
-      await correo, contrasena;
+      if (datos.correo.trim() === "" || datos.contrasena.trim() === "") {
+        return;
+      }
+
+      await POST(datos);
 
       setCorreo("");
       setContrasena("");
 
-      if(isLogin){
-        navegar("/coches")
-      }
+      navegar("/coches")
 
     } catch (err) {
       console.error("No se ha podido hacer", err);
     }
   };
 
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <>
       <div>
-        <h1>{isLogin ? 'Iniciar sesión' : 'Registrarse'}</h1>
+        <h1>Iniciar Sesión</h1>
         <form onSubmit={enviarDatos}>
           <div>
             <label>
@@ -58,10 +75,8 @@ function FormularioLogin(){
               />
             </label>
 
-            <Boton type="submit">
-                {isLogin ? 'Login' : 'Registrarse'}
-            </Boton>
-
+            <Boton type="submit">Login</Boton>
+            
           </div>
         </form>
       </div>
