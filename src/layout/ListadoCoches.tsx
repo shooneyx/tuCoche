@@ -79,10 +79,9 @@ function ListadoCoches(){
                                 <th>Precio</th>
                                 <th>Fecha de Matriculación</th>
                                 <th>Combustible</th>
-                                <th>Imagen</th> {/* son urls */}
-                                <th>Propietario</th> {/* Usuario al que pertnece el coche */}
+                                <th>Imagen</th>
+                                <th>Propietario</th> 
                             </tr>
-                            
                         </thead>
                         <tbody>
                             {data?.data.map(t =>
