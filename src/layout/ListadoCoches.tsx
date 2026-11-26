@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import Navbar from "../components/Navbar";
 import useGet from "../components/CRUD/GET";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const ContenedorPagina = styled.div`
     display: grid;
@@ -85,6 +86,10 @@ function ListadoCoches(){
         }
        
     }
+    const navegar = useNavigate();
+    const botonNuevoCoche = () =>{
+        navegar("/coches/nuevo")
+    }
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -94,9 +99,9 @@ function ListadoCoches(){
             <ContenedorPagina>
                 <Navbar />
                 <ContenedorLista>
-                    <button>Añadir coche</button>
-                    <button type="button" onClick={prev} disabled={!data?.links.prev}>Prev</button>
-                    <button type="button" onClick={next} disabled={!data?.links.next}>Next</button>
+                    <button onClick={botonNuevoCoche}>Añadir coche</button>
+                    <button onClick={prev} disabled={!data?.links.prev}>Prev</button>
+                    <button onClick={next} disabled={!data?.links.next}>Next</button>
                     {/* panel con lista de coches -> si tiene coche muestra coches, si no tiene ninguno muestra mensaje
                     aun no tiene coches a su nombre */}
                     <TablaCoches>
