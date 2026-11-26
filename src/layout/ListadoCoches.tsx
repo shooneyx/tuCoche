@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Navbar from "../components/Navbar";
 import useGet from "../components/CRUD/GET";
+import { useState } from "react";
 
 const ContenedorPagina = styled.div`
     display: grid;
@@ -50,14 +51,40 @@ type Coche = {
     usuario: string;
 };
 
-type RespuestaCoche = {
+type RespuestaCoche = { //usamos los links del servidor para usarlos en un boton para la tabla
+    links: {
+        prev: string | null;
+        next: string | null;
+    }
     data: Coche[];
 };
 
 
 
 function ListadoCoches(){
-    const { data, isLoading, error } = useGet<RespuestaCoche>("http://localhost:3000/coches");
+    const [url, setUrl] = useState("http://localhost:3000/coches");
+    const { data, isLoading, error } = useGet<RespuestaCoche>(url);
+
+    const next = () => {
+        const dataNext = data?.links.next;
+
+        if(!dataNext){ //si no existe o es null
+            return;
+        } else{
+            setUrl(dataNext);
+        }
+       
+    }
+    const prev = () => {
+        const dataPrev = data?.links.prev;
+
+        if(!dataPrev){ //si no existe o es null
+            return;
+        } else{
+            setUrl(dataPrev);
+        }
+       
+    }
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -68,6 +95,8 @@ function ListadoCoches(){
                 <Navbar />
                 <ContenedorLista>
                     <button>Añadir coche</button>
+                    <button type="button" onClick={prev} disabled={!data?.links.prev}>Prev</button>
+                    <button type="button" onClick={next} disabled={!data?.links.next}>Next</button>
                     {/* panel con lista de coches -> si tiene coche muestra coches, si no tiene ninguno muestra mensaje
                     aun no tiene coches a su nombre */}
                     <TablaCoches>
