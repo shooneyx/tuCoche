@@ -35,7 +35,8 @@ function EditarCoche( {datosAnteriores}:Props ){
     const [combustible, setCombustible] = useState(datosAnteriores?.combustible || ""); //estado -> input responsable 
     const [urlImagen, setUrlImagen] = useState(datosAnteriores?.urlImagen || ""); //estado -> input responsable 
 
-    const {PUT, isLoading, error } = usePut<Coche, RespuestaCoche>(`http://localhost:3000/coches/:id/editar`); //PREGUNTAR A PABLO
+    const id = datosAnteriores?.id;
+    const {PUT, isLoading, error } = usePut<Coche, RespuestaCoche>(`http://localhost:3000/coches/${id}/editar`);
 
     const navegar = useNavigate();
 
@@ -43,6 +44,7 @@ function EditarCoche( {datosAnteriores}:Props ){
         e.preventDefault();
 
         const datos = {
+            id,
             marca, 
             modelo, 
             ano,
