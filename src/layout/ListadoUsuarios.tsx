@@ -93,8 +93,15 @@ function ListadoUsuarios(){
        
     }
     const navegar = useNavigate();
-    const botonNuevoCoche = () =>{
-        navegar("/coches/nuevo")
+
+    const botonNuevoUsuario = () =>{
+        navegar("/usuarios/nuevo")
+    }
+    const botonEditarUsuario = (id: string) => {
+        navegar(`/usuarios/${id}/editar`);
+    }
+    const botonEliminarUsuario = (id: string) =>{
+        
     }
 
     if (isLoading) return <p>Cargando...</p>;
@@ -105,7 +112,7 @@ function ListadoUsuarios(){
             <ContenedorPagina>
                 <Navbar />
                 <ContenedorLista>
-                    <button onClick={botonNuevoCoche}>Añadir coche</button>
+                    <button onClick={botonNuevoUsuario}>Añadir usuario</button>
                     <button onClick={prev} disabled={!data?.links.prev}>Prev</button>
                     <button onClick={next} disabled={!data?.links.next}>Next</button>
                     {/* panel con lista de coches -> si tiene coche muestra coches, si no tiene ninguno muestra mensaje
@@ -118,6 +125,7 @@ function ListadoUsuarios(){
                                 <th>Rol</th>
                                 <th>Fecha de Nacimiento</th>
                                 <th>Sus coches</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,6 +141,10 @@ function ListadoUsuarios(){
                                             {coche.marca} {coche.modelo}
                                         </td>
                                     ))}
+                                    <td>
+                                        <button onClick={() => botonEditarUsuario(t.id)}>Editar</button>
+                                        <button onClick={() => botonEliminarUsuario(t.id)}>Eliminar</button>
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

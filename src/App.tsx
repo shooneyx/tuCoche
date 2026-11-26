@@ -13,6 +13,7 @@ import TarjetaCoche from './components/TarjetaCoche';
 import PerfilUsuario from './components/PerfilUsuario';
 import EditarUsuario from './components/EditarUsuario';
 import ListadoUsuarios from './layout/ListadoUsuarios';
+import NuevoUsuario from './components/NuevoUsuario';
 
 function App(){
   return(
@@ -33,6 +34,7 @@ function App(){
           {/* COLECCION USUARIOS */}
             <Route path="/perfil" element={<PerfilUsuario />} />
             <Route path="/usuarios" element={<ListadoUsuarios />} />
+            <Route path="/usuarios/nuevo" element={<NuevoUsuario />} />
             <Route path="/usuarios/:id/editar" element={<EditarUsuario />} />
         </Routes>
     </>

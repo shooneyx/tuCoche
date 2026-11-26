@@ -15,6 +15,17 @@ type Usuario = {
     contrasena: string,
     fechaNacimiento?: string;
 }
+type RespuestaUsuario = {
+  mensaje: string,
+  token: string,
+  usuario: DatosUsuario;
+}
+type DatosUsuario = {
+  nombre: string,
+  correo: string,
+  rol: string,
+  fechaNacimiento?: string;
+}
 
 function FormularioRegistro(){
     const [nombre, setNombre] = useState(""); 
@@ -22,7 +33,7 @@ function FormularioRegistro(){
     const [contrasena, setContrasena] = useState(""); 
     const [fechaNacimiento, setFechaNacimiento] = useState(""); 
 
-    const {POST, isLoading, error } = usePost<Usuario>("http://localhost:3000/auth/register");
+    const {POST, isLoading, error } = usePost<Usuario, RespuestaUsuario>("http://localhost:3000/auth/register");
 
     const navegar = useNavigate();
 

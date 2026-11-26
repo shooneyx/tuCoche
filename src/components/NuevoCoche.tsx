@@ -12,6 +12,15 @@ type Coche = {
     urlImagen?: string | null;
 }
 
+type RespuestaCoche = { //usamos los links del servidor para usarlos en un boton para la tabla
+    links: {
+        prev: string | null;
+        next: string | null;
+    }
+    data: Coche[];
+};
+
+
 type Props = {
     datosAnteriores?: Coche
 };
@@ -25,7 +34,8 @@ function NuevoCoche( {datosAnteriores}:Props ){
     const [combustible, setCombustible] = useState(datosAnteriores?.combustible || ""); //estado -> input responsable 
     const [urlImagen, setUrlImagen] = useState(datosAnteriores?.urlImagen || ""); //estado -> input responsable 
 
-    const {POST, isLoading, error } = usePost<Coche>("http://localhost:3000/coches/nuevo");
+    const {POST, isLoading, error } = usePost<Coche, RespuestaCoche>("http://localhost:3000/coches/nuevo");
+
     const navegar = useNavigate();
 
     const guardarCoche = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,6 +76,10 @@ function NuevoCoche( {datosAnteriores}:Props ){
             console.error("No se pudo guardar la tarea", err);
         }
     };
+
+    const botonVolver = () =>{
+        navegar("/coches")
+    }
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -132,6 +146,7 @@ function NuevoCoche( {datosAnteriores}:Props ){
                 />
                 </label>
 
+                <button onClick={botonVolver}>Volver</button>
                 <button type="submit">Guardar</button>
             </div>
             </form>

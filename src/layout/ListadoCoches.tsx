@@ -115,6 +115,7 @@ function ListadoCoches(){
                                 <th>Combustible</th>
                                 <th>Imagen</th>
                                 <th>Propietario</th> 
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,6 +129,10 @@ function ListadoCoches(){
                                     <td>{t.combustible}</td>
                                     <td>{t.urlImagen}</td>
                                     <td>{t.usuario}</td>
+                                    <td>
+                                        <button>Editar</button>
+                                        <button>Eliminar</button>
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

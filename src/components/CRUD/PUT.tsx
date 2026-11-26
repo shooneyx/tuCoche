@@ -1,36 +1,36 @@
+import { useState } from "react";
 
-async function ModificarTarea( id: string, titulo: string, descripcion: string, responsable: string){
+//T --> represneta datos enviados, R --> datos recibidos
+function usePut<T, R>(url:string) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-  const urlPUT = `http://localhost:3001/tareas/${id}`;
+    async function PUT(datos:T){
+        setIsLoading(true);
+        setError(null);
 
-  if(titulo.trim() === "" || responsable.trim() === ""){ //valida que no este vacio o hayan espacios
-    return;
+        try{
+            const respuesta = await fetch(url, {
+                headers: {
+                "Content-Type": "application/json"
+                },
+                method: "PUT",
+                body: JSON.stringify(datos),
+            })
 
-  }else{
-    try{
-      const datosModificada = { 
-        titulo: titulo, 
-        descripcion: descripcion,
-        responsable: responsable
-      } 
+            if (!respuesta.ok) throw new Error("Error HTTP"); //comrpueba si la peticin ha salido bien
+            const json: R = await respuesta.json();
+            return json;
 
-      const respuesta = await fetch(urlPUT, {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        method: "PUT",
-        body: JSON.stringify(datosModificada),
-      })
-
-      if (!respuesta.ok) throw new Error("Error HTTP"); //comrpueba si la peticin ha salido bien
-      const tareaModificada = await respuesta.json()
-      return tareaModificada;
-
-    } catch (err) {
-      throw err;
+        } catch(err){
+            const mensaje = err instanceof Error ? err.message : "Error al hacer POST";
+            setError(mensaje);
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
     }
-  }
 
-}
+return { PUT, isLoading, error }}
 
-export default ModificarTarea;
+export default usePut;
