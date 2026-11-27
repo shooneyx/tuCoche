@@ -3,14 +3,14 @@ import usePut from "./CRUD/PUT";
 import { useState } from "react";
 
 type Coche = {
-    id: string,
     marca: string,
     modelo: string,
-    ano: string,
-    precio: string,
+    ano: number,
+    precio: number,
     fechaMatriculacion: string,
     combustible: string,
-    urlImagen?: string | null;
+    urlImagen?: string | null,
+    id?: string,
 }
 
 type RespuestaCoche = { //usamos los links del servidor para usarlos en un boton para la tabla
@@ -21,19 +21,18 @@ type RespuestaCoche = { //usamos los links del servidor para usarlos en un boton
     data: Coche[];
 };
 
-
 type Props = {
     datosAnteriores?: Coche
 };
   
 function EditarCoche( {datosAnteriores}:Props ){
-    const [marca, setMarca] = useState(datosAnteriores?.marca || ""); //estado -> input titulo
-    const [modelo, setModelo] = useState(datosAnteriores?.modelo || ""); //estado -> input descripcion
-    const [ano, setAno] = useState(datosAnteriores?.ano || ""); //estado -> input responsable 
-    const [precio, setPrecio] = useState(datosAnteriores?.precio || ""); //estado -> input titulo
-    const [fechaMatriculacion, setFechaMatriculacion] = useState(datosAnteriores?.fechaMatriculacion || ""); //estado -> input descripcion
-    const [combustible, setCombustible] = useState(datosAnteriores?.combustible || ""); //estado -> input responsable 
-    const [urlImagen, setUrlImagen] = useState(datosAnteriores?.urlImagen || ""); //estado -> input responsable 
+    const [marca, setMarca] = useState(datosAnteriores?.marca || ""); 
+    const [modelo, setModelo] = useState(datosAnteriores?.modelo || ""); 
+    const [ano, setAno] = useState(datosAnteriores?.ano?.toString() || "");
+    const [precio, setPrecio] = useState(datosAnteriores?.precio?.toString() || "");
+    const [fechaMatriculacion, setFechaMatriculacion] = useState(datosAnteriores?.fechaMatriculacion || "");
+    const [combustible, setCombustible] = useState(datosAnteriores?.combustible || ""); 
+    const [urlImagen, setUrlImagen] = useState(datosAnteriores?.urlImagen || ""); 
 
     const id = datosAnteriores?.id;
     const {PUT, isLoading, error } = usePut<Coche, RespuestaCoche>(`http://localhost:3000/coches/${id}/editar`);
@@ -43,12 +42,13 @@ function EditarCoche( {datosAnteriores}:Props ){
     const guardarCoche = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const datos = {
+        if (!id) return;
+        const datos: Coche = {
             id,
             marca, 
             modelo, 
-            ano,
-            precio, 
+            ano: Number(ano),
+            precio: Number(precio), 
             fechaMatriculacion,
             combustible,
             urlImagen
@@ -56,7 +56,7 @@ function EditarCoche( {datosAnteriores}:Props ){
 
         try {
             //1º valida
-            if (datos.marca.trim() === "" || datos.modelo.trim() === "" || datos.ano.trim() === "" || datos.precio.trim() === "" || datos.fechaMatriculacion.trim() === "" || datos.combustible.trim() === "") {
+            if (datos.marca.trim() === "" || datos.modelo.trim() === "" || datos.ano < 1885  || datos.precio <= 0 || datos.fechaMatriculacion.trim() === "" || datos.combustible.trim() === "") {
                 return;
             }
 

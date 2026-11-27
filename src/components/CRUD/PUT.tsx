@@ -1,9 +1,12 @@
 import { useState } from "react";
+import useAuth from "../../context/UseAuth";
 
 //T --> represneta datos enviados, R --> datos recibidos
 function usePut<T, R>(url:string) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const { token } = useAuth();
 
     async function PUT(datos:T){
         setIsLoading(true);
@@ -12,7 +15,8 @@ function usePut<T, R>(url:string) {
         try{
             const respuesta = await fetch(url, {
                 headers: {
-                "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
                 },
                 method: "PUT",
                 body: JSON.stringify(datos),

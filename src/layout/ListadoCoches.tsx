@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Navbar from "../components/Navbar";
 import useGet from "../components/CRUD/GET";
+import useDelete from "../components/CRUD/DELETE";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
