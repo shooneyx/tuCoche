@@ -23,7 +23,7 @@ function usePut<T, R>(url:string) {
             return json;
 
         } catch(err){
-            const mensaje = err instanceof Error ? err.message : "Error al hacer POST";
+            const mensaje = err instanceof Error ? err.message : "Error al hacer PUT";
             setError(mensaje);
             throw err;
         } finally {

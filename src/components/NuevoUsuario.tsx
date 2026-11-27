@@ -33,7 +33,7 @@ function NuevoUsuario(){
     const [contrasena, setContrasena] = useState(""); 
     const [fechaNacimiento, setFechaNacimiento] = useState(""); 
 
-    const {POST, isLoading, error } = usePost<Usuario, RespuestaUsuario>("http://localhost:3000/usuarios/nuevo");
+    const {POST, isLoading, error } = usePost<Usuario, RespuestaUsuario>("http://localhost:3000/auth/register");
 
     const navegar = useNavigate();
 

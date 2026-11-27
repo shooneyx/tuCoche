@@ -130,6 +130,7 @@ function ListadoCoches(){
                                     <td>{t.urlImagen}</td>
                                     <td>{t.usuario}</td>
                                     <td>
+                                        <button>Ver</button>
                                         <button>Editar</button>
                                         <button>Eliminar</button>
                                     </td>

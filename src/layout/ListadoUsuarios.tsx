@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Navbar from "../components/Navbar";
 import useGet from "../components/CRUD/GET";
+import useDelete from "../components/CRUD/DELETE";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -71,6 +72,8 @@ type RespuestaUsuario = {
 function ListadoUsuarios(){
     const [url, setUrl] = useState("http://localhost:3000/usuarios");
     const { data, isLoading, error } = useGet<RespuestaUsuario>(url);
+    const { DELETE, isLoadingDelete, errorDelete } = useDelete();
+
 
     const next = () => {
         const dataNext = data?.links.next;
@@ -100,12 +103,20 @@ function ListadoUsuarios(){
     const botonEditarUsuario = (id: string) => {
         navegar(`/usuarios/${id}/editar`);
     }
-    const botonEliminarUsuario = (id: string) =>{
-        
+    const botonEliminarUsuario = async (id: string) =>{
+        try{
+            await DELETE(`http://localhost:3000/usuarios/${id}`);
+            //actualizamos la lista tras eliminarlo
+            setUrl("http://localhost:3000/usuarios");
+        }catch(err){
+            console.error("No se pudo borrar la tarea", err);
+        }
     }
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
+    if (isLoadingDelete) return <p>Cargando...</p>;
+    if (errorDelete) return <p>Error: {errorDelete}</p>;
 
     return(
         <>  
