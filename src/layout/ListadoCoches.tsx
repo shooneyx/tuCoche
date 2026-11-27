@@ -65,6 +65,7 @@ type RespuestaCoche = { //usamos los links del servidor para usarlos en un boton
 function ListadoCoches(){
     const [url, setUrl] = useState("http://localhost:3000/coches");
     const { data, isLoading, error } = useGet<RespuestaCoche>(url);
+    const { DELETE, isLoadingDelete, errorDelete } = useDelete();
 
     const next = () => {
         const dataNext = data?.links.next;
@@ -90,9 +91,23 @@ function ListadoCoches(){
     const botonNuevoCoche = () =>{
         navegar("/coches/nuevo")
     }
+    const botonEditarCoche = (id: string) => {
+        navegar(`/coches/${id}/editar`);
+    }
+    const botonEliminarCoche = async (id: string) =>{
+        try{
+            await DELETE(`http://localhost:3000/coches/${id}`);
+            //actualizamos la lista tras eliminarlo
+            setUrl("http://localhost:3000/coches");
+        }catch(err){
+            console.error("No se pudo borrar la tarea", err);
+        }
+    }
 
     if (isLoading) return <p>Cargando...</p>;
     if (error) return <p>Error: {error}</p>;
+    if (isLoadingDelete) return <p>Cargando...</p>;
+    if (errorDelete) return <p>Error: {errorDelete}</p>;
 
     return(
         <>  
@@ -131,8 +146,8 @@ function ListadoCoches(){
                                     <td>{t.usuario}</td>
                                     <td>
                                         <button>Ver</button>
-                                        <button>Editar</button>
-                                        <button>Eliminar</button>
+                                        <button onClick={() => botonEditarCoche(t.id)}>Editar</button>
+                                        <button onClick={() => botonEliminarCoche(t.id)}>Eliminar</button>
                                     </td>
                                 </tr>
                             )}
